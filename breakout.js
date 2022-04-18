@@ -3,18 +3,18 @@
 
 var paddle, ball, wallTop, wallBottom, wallLeft, wallRight;
 var bricks;
-var MAX_SPEED = 9;
-var WALL_THICKNESS = 30;
-var BRICK_W = 40;
-var BRICK_H = 20;
-var BRICK_MARGIN = 4;
-var ROWS = 9;
-var COLUMNS = 16;
+var MAX_SPEED = 5;
+var WALL_THICKNESS = 300;
+var BRICK_W = 250;
+var BRICK_H = -500;
+var BRICK_MARGIN = 10;
+var ROWS = 1;
+var COLUMNS = 2;
 
 function setup() {
   createCanvas(800, 600);
 
-  paddle = createSprite(width/2, height-50, 100, 10);
+  paddle = createSprite(width/8, height-50, 10);
   paddle.immovable = true;
 
   wallTop = createSprite(width/2, -WALL_THICKNESS/2, width+WALL_THICKNESS*2, WALL_THICKNESS);
@@ -37,7 +37,7 @@ function setup() {
   for(var r = 0; r<ROWS; r++)
     for(var c = 0; c<COLUMNS; c++) {
       var brick = createSprite(offsetX+c*(BRICK_W+BRICK_MARGIN), offsetY+r*(BRICK_H+BRICK_MARGIN), BRICK_W, BRICK_H);
-      brick.shapeColor = color(255, 255, 255);
+      brick.shapeColor = color(150);
       bricks.add(brick);
       brick.immovable = true;
     }
@@ -46,12 +46,12 @@ function setup() {
   //have the ball bigger than the bricks
   ball = createSprite(width/2, height-200, 11, 11);
   ball.maxSpeed = MAX_SPEED;
-  paddle.shapeColor = ball.shapeColor = color(255, 255, 255);
+  paddle.shapeColor = ball.shapeColor = color(255, 0, 0);
 
 }
 
 function draw() {
-  background(247, 134, 131);
+  background( 41, 246, 62);
 
   paddle.position.x = constrain(mouseX, paddle.width/2, width-paddle.width/2);
 
