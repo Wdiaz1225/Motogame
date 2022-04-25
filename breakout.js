@@ -6,7 +6,7 @@ var bricks;
 var MAX_SPEED = 5;
 var WALL_THICKNESS = 300;
 var BRICK_W = 250;
-var BRICK_H = -500;
+var BRICK_H = 500;
 var BRICK_MARGIN = 10;
 var ROWS = 1;
 var COLUMNS = 2;
