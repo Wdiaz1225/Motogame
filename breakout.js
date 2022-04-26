@@ -2,31 +2,15 @@
 //mouse to control the paddle, click to start
 let gameState = 'title';
 
-var car1,car1Image;
-var car2,car2Image;
-var scooter,scooterImage;
-var truck,truckImage;
-var car1Group,car2Group,scooterGroup,truckGroup;
-var road,roadImage;
-var player,playerImage;
-var score;
-var PLAY=1;
-var END=0;
-var gameState=PLAY;
-var gameover,gameoverImage
-var restart,restartImage
-
-function preload(){
-  playerImage=loadImage("player.png");
-  roadImage=loadImage("Road.jpg");
-  car1Image=loadImage("car1.png");
-  car2Image=loadImage("car2.png");
-  scooterImage=loadImage("scooter.png");
-   truckImage=loadImage("truck.png");
-  gameoverImage=loadImage("gameover.png");
-  restartImage=loadImage("restart.png");
-
-}
+var paddle, ball, wallTop, wallBottom, wallLeft, wallRight;
+var bricks;
+var MAX_SPEED = 5;
+var WALL_THICKNESS = 300;
+var BRICK_W = 250;
+var BRICK_H = 500;
+var BRICK_MARGIN = 10;
+var ROWS = 1;
+var COLUMNS = 2;
 
 function setup() {
   createCanvas(800, 600);
