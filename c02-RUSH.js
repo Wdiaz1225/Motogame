@@ -19,7 +19,9 @@ let first;
 let player;
 let enemy0;
 let enemy00;
-var GRAVITY = 0.2;
+var GRAVITY = 2;
+var cars;
+var newCar;
 
 
 function preload(){
@@ -34,6 +36,18 @@ function setup() {
 bg = loadImage('assets/RoadBackground.png');
   createCanvas(800, 600);
 frameRate(60);
+
+car2 = createSprite(500,200);
+car2.addImage('normal',enemy00);
+car2.velocity.y = 3;
+
+cars = new Group();
+//
+// for(var i = 0; i<6; i++) {
+//     var newCar = createSprite(random(0, width), random(0, height));
+//     newCar.addImage(enemy0,enemy00);
+//     cars.add(newCar);
+//   }
 
 
   paddle = createSprite(width/3, height-70, 11);
@@ -124,20 +138,49 @@ function gameStage1 () {
       y = 0;
     }
 
-// var scale = 3;
-//     image(player,-400,-750);
+    for(var i = 0; i<cars.length; i++) {
+    var g = cars;
+    //moving all the ghosts y following a sin function (sinusoid)
+    cars.position.y += sin(frameCount/10);
+  }
+
+    for(var i=0; i<cars.length; i++)
+      {
+        // var mySprite = cars;
+
+        //adding a speed at 90 degrees (down)
+        //equivalent to: mySprite.velocity.y += GRAVITY;
+        cars.addSpeed(20, 90);
+
+        //even if they are out of the canvas, sprites keep getting updated
+        //consuming precious memory
+        //use Sprite.remove() to remove a sprite from the sketch
+        if(cars.position.y > height + 100)
+          cars.remove();
+      }
+
+      //if(frameCount%10 == 0)
+   //print('Sprite in the scene: ' +cars.length);
+
+
+if(car2.position.y > width)
+    car2.position.y = 0;
+
+    if(ball.position.y > width)
+        ball.position.y = 0;
 
   paddle.position.x = constrain(mouseX, paddle.width/2, width-paddle.width/2);
 
+  car2.bounce(wallTop);
   ball.bounce(wallTop);
-  ball.bounce(wallBottom);
+  //ball.bounce(wallBottom);
   ball.bounce(wallLeft);
   ball.bounce(wallRight);
 
-  if(ball.bounce(paddle))
+  if(ball.bounce(paddle) || car2.bounce(paddle))
   {
-    var swing = (ball.position.x-paddle.position.x)/3;
-    ball.setSpeed(MAX_SPEED, ball.getDirection()+swing);
+    // var swing = (ball.position.x-paddle.position.x)/3;
+    // ball.setSpeed(MAX_SPEED, ball.getDirection()+swing);
         gameState = 'gameover';
         SCORE=0;
   }
@@ -167,6 +210,11 @@ function gameOver () {
 
 function mousePressed() {
 
+var newSprite = createSprite(mouseX, mouseY)
+newSprite.addImage(enemy00);
+
+newSprite.addSpeed(GRAVITY,90);
+
   if(ball.velocity.x == 0 && ball.velocity.y == 0) {
     ball.setSpeed(MAX_SPEED, random(90-10, 90+10));
   }
@@ -177,15 +225,4 @@ function brickHit(ball, brick) {
   brick.remove();
 }
 
-// function spawnEnemy0(){
-//
-//   if(frameCount%250===0){
-//  var enemy0=createSprite(width/8, height-200, 101, 101);
-//     ball.addImage(enemy1);
-//     ball.scale=0.3;
-//     ball.velocityY=4;
-//     ball.x=Math.round(random(40,300));
-//      ball.lifetime=300;
-//
-// }
 }
