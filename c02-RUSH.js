@@ -3,17 +3,32 @@
 let gameState = 'title';
 
 var paddle, ball, wallTop, wallBottom, wallLeft, wallRight;
-var bricks;
-var MAX_SPEED = 5;
+var MAX_SPEED = 4;
 var WALL_THICKNESS = 300;
-var BRICK_W = 250;
-var BRICK_H = 500;
+var BRICK_W = 0;
+var BRICK_H = 0;
 var BRICK_MARGIN = 10;
 var ROWS = 1;
 var COLUMNS = 2;
+var SCORE;
+let bg;
+let y = 0;
+let skull;
+let first;
+let player;
 
+
+function preload(){
+skull = loadImage('assets/GameOver.png');
+first = loadImage('assets/title.png');
+player = loadImage('assets/Motor1.png')
+
+ }
 function setup() {
+bg = loadImage('assets/RoadBackground.png');
   createCanvas(800, 600);
+frameRate(60);
+
 
   paddle = createSprite(width/8, height-50, 10);
   paddle.immovable = true;
@@ -41,13 +56,17 @@ function setup() {
       brick.shapeColor = color(150);
       bricks.add(brick);
       brick.immovable = true;
+
+      // gameover=createSprite(270,300,30,30)
+      //   gameover.addImage(gameoverImage);
+      //   gameover.scale=0.6;
     }
 
-  //the easiest way to avoid pesky multiple collision is to
-  //have the ball bigger than the bricks
-  ball = createSprite(width/2, height-200, 11, 11);
+  ball = createSprite(width/2, height-200, 101, 101);
   ball.maxSpeed = MAX_SPEED;
-  paddle.shapeColor = ball.shapeColor = color(255, 0, 0);
+  paddle.shapeColor = ball.shapeColor = color(0, 255, 0);
+
+SCORE = 0
 
 }
 
@@ -66,6 +85,7 @@ function draw() {
   case 'gameover':
     gameOver();
     break;
+
 }
 
 }
@@ -87,10 +107,22 @@ function keyReleased() {
   }
 }
 function titleScreen () {
-  text('title',width/2,height/2);
+background(first);
+  //text('press "s" to begin',width/2,height/5);
 }
 function gameStage1 () {
-  background( 41, 246, 62);
+  background(bg);
+
+    y++;
+    if (y > height) {
+      y = 0;
+    }
+
+// var scale = 3;
+//     image(player,-400,-750);
+
+
+
 
   paddle.position.x = constrain(mouseX, paddle.width/2, width-paddle.width/2);
 
@@ -106,20 +138,35 @@ function gameStage1 () {
         gameState = 'gameover';
   }
 
-  ball.bounce(bricks, brickHit);
+  SCORE = SCORE + Math.round(getFrameRate()/40);
+      console.log(frameCount);
+text('Score:  '+ SCORE,10,10);
 
+  //ball.bounce(bricks, brickHit);
   drawSprites();
 }
 
 function gameOver () {
-  text('gameover', width/2,height/2);
+  background('black');
+  stroke(255);
+  fill(255);
+  textSize(75);
+  textAlign(CENTER);
+  scale(0.5);
+  image(skull,0,-750);
+  textAlign(CENTER);
+  textSize(50);
+  text('Press "S" To Restart Game', width/1,height/.6);
 }
 
 function mousePressed() {
-  if(ball.velocity.x == 0 && ball.velocity.y == 0)
+
+  if(ball.velocity.x == 0 && ball.velocity.y == 0) {
     ball.setSpeed(MAX_SPEED, random(90-10, 90+10));
-}
+  }
+
 
 function brickHit(ball, brick) {
   brick.remove();
+}
 }
