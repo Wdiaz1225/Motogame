@@ -3,6 +3,7 @@
 let gameState = 'title';
 
 var paddle, ball, wallTop, wallBottom, wallLeft, wallRight;
+var ball2
 var MAX_SPEED = 4;
 var WALL_THICKNESS = 300;
 var BRICK_W = 0;
@@ -16,12 +17,17 @@ let y = 0;
 let skull;
 let first;
 let player;
+let enemy0;
+let enemy00;
+var GRAVITY = 0.2;
 
 
 function preload(){
 skull = loadImage('assets/GameOver.png');
 first = loadImage('assets/title.png');
-player = loadImage('assets/Motor1.png')
+player = loadImage('assets/Motor1.png');
+enemy0 = loadImage('assets/enemy1.png');
+enemy00 = loadImage('assets/enemy2.png')
 
  }
 function setup() {
@@ -30,7 +36,9 @@ bg = loadImage('assets/RoadBackground.png');
 frameRate(60);
 
 
-  paddle = createSprite(width/8, height-50, 10);
+  paddle = createSprite(width/3, height-70, 11);
+  paddle.addImage(player);
+  paddle.scale=.080;
   paddle.immovable = true;
 
   wallTop = createSprite(width/2, -WALL_THICKNESS/2, width+WALL_THICKNESS*2, WALL_THICKNESS);
@@ -56,15 +64,13 @@ frameRate(60);
       brick.shapeColor = color(150);
       bricks.add(brick);
       brick.immovable = true;
-
-      // gameover=createSprite(270,300,30,30)
-      //   gameover.addImage(gameoverImage);
-      //   gameover.scale=0.6;
     }
 
-  ball = createSprite(width/2, height-200, 101, 101);
-  ball.maxSpeed = MAX_SPEED;
-  paddle.shapeColor = ball.shapeColor = color(0, 255, 0);
+  ball = createSprite(width/4, height-200, 11, 11);
+  ball.addImage(enemy0);
+  ball.velocity.y = -3;
+
+
 
 SCORE = 0
 
@@ -121,9 +127,6 @@ function gameStage1 () {
 // var scale = 3;
 //     image(player,-400,-750);
 
-
-
-
   paddle.position.x = constrain(mouseX, paddle.width/2, width-paddle.width/2);
 
   ball.bounce(wallTop);
@@ -136,11 +139,14 @@ function gameStage1 () {
     var swing = (ball.position.x-paddle.position.x)/3;
     ball.setSpeed(MAX_SPEED, ball.getDirection()+swing);
         gameState = 'gameover';
+        SCORE=0;
   }
 
-  SCORE = SCORE + Math.round(getFrameRate()/40);
+  SCORE = SCORE + Math.round(getFrameRate()/60);
       console.log(frameCount);
-text('Score:  '+ SCORE,10,10);
+      fill('aqua');
+      textSize(30);
+text('Score:  '+ SCORE,10,50);
 
   //ball.bounce(bricks, brickHit);
   drawSprites();
@@ -166,7 +172,20 @@ function mousePressed() {
   }
 
 
+
 function brickHit(ball, brick) {
   brick.remove();
 }
+
+// function spawnEnemy0(){
+//
+//   if(frameCount%250===0){
+//  var enemy0=createSprite(width/8, height-200, 101, 101);
+//     ball.addImage(enemy1);
+//     ball.scale=0.3;
+//     ball.velocityY=4;
+//     ball.x=Math.round(random(40,300));
+//      ball.lifetime=300;
+//
+// }
 }
